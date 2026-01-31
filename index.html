@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Be My Valentine 💖</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+    }
+
+    .card {
+      background: white;
+      padding: 60px 70px;
+      border-radius: 30px;
+      text-align: center;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+      width: 80vw;
+      max-width: 600px;
+      min-height: 400px;
+    }
+
+    h1 {
+      color: #ff4d6d;
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 26px;
+      margin-bottom: 50px;
+    }
+
+    .buttons {
+      position: relative;
+      height: 140px;
+    }
+
+    button {
+      padding: 18px 45px;
+      font-size: 22px;
+      border: none;
+      border-radius: 40px;
+      cursor: pointer;
+      position: absolute;
+      transition: all 0.2s ease;
+    }
+
+    #yesBtn {
+      background-color: #ff4d6d;
+      color: white;
+      left: 100px;
+    }
+
+    #noBtn {
+      background-color: #ccc;
+      color: #333;
+      left: 320px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1>Hi LIZA!!! 💕</h1>
+    <p>Will you be my Valentine? 🌹</p>
+
+    <div class="buttons">
+      <button id="yesBtn" onclick="yesClicked()">Yes 💖</button>
+      <button id="noBtn">No 🙈</button>
+    </div>
+  </div>
+
+  <script>
+    const noBtn = document.getElementById("noBtn");
+
+    noBtn.addEventListener("mouseover", () => {
+      const x = Math.random() * 350;
+      const y = Math.random() * 80;
+
+      noBtn.style.left = x + "px";
+      noBtn.style.top = y + "px";
+    });
+
+    function yesClicked() {
+      document.body.innerHTML = `
+        <div style="
+          height:100vh;
+          display:flex;
+          flex-direction:column;
+          justify-content:center;
+          align-items:center;
+          background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+          font-family:'Comic Sans MS', cursive;
+          text-align:center;
+          padding:40px;
+        ">
+          <h1 style="color:#ff4d6d; font-size:60px;">YAY💘</h1>
+          <p style="font-size:28px; max-width:700px;">
+            Thank you for saying YES 🥹❤️<br>
+            I can’t wait to spend Valentine’s with you 🌹
+          </p>
+        </div>
+      `;
+    }
+  </script>
+
+</body>
+</html>
