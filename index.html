@@ -76,19 +76,32 @@
     margin-bottom: 30px;
   }
 
-  /* Push Heart button */
+  /* Push Heart as animated floating heart */
   #pushHeartBtn {
-    padding: 14px 28px;
-    font-size: 20px;
-    border-radius: 30px;
+    font-size: 40px;
+    background: none;
     border: none;
-    background-color: #ff4d6d;
-    color: white;
     cursor: pointer;
-    transition: transform 0.2s ease;
+    opacity: 0;
+    pointer-events: none;
+    color: #ff4d6d;
+    animation: pulse 1s infinite, floatHeart 3s ease-in-out infinite;
+    transition: opacity 1s ease;
   }
-  #pushHeartBtn:hover {
-    transform: scale(1.2);
+  #pushHeartBtn.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.4); }
+  }
+
+  @keyframes floatHeart {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
   }
 
   /* Valentine card buttons */
@@ -117,12 +130,10 @@
     position: absolute;
     width: 10px;
     height: 10px;
-    background-color: red;
-    opacity: 0.8;
+    opacity: 0.9;
     pointer-events: none;
-    transform: rotate(45deg);
-    animation: fall 3s linear forwards;
     border-radius: 3px;
+    animation: fall 3s linear forwards;
   }
   @keyframes fall {
     0% { transform: translateY(0) rotate(0deg); opacity:1; }
@@ -133,9 +144,11 @@
 <body>
 
 <!-- Background music -->
+<audio id="bgMusic" autoplay loop>
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
 
-
-<!-- Floating hearts -->
+<!-- Floating hearts and confetti -->
 <div id="hearts"></div>
 <div id="confetti"></div>
 
@@ -145,10 +158,10 @@
 I don't want to love you in a rushed way.
 I want to learn you.
 How you take your coffee, what made you cry as a child, why your old life feels heavy to remember.
-I want to know every version of you, the soft, the messy, the guarded, the dark.
-Not to change you, but to see you fully and choose you everyday.
+I want to know every version of you — the soft, the messy, the guarded, the dark.
+Not to change you, but to see you fully and choose you anyway.
   </div>
-  <button id="pushHeartBtn">💚 Click To Enter In My Heart 💚</button>
+  <button id="pushHeartBtn">💖</button>
 </div>
 
 <script>
@@ -185,14 +198,17 @@ function createHearts(num) {
 }
 
 // TYPEWRITER EFFECT
-function typeWriter(element, speed = 50) {
+function typeWriter(element, speed = 50, callback) {
   const text = element.textContent;
   element.textContent = "";
   let i = 0;
   const interval = setInterval(() => {
     element.textContent += text.charAt(i);
     i++;
-    if (i >= text.length) clearInterval(interval);
+    if (i >= text.length) {
+      clearInterval(interval);
+      if (callback) callback();
+    }
   }, speed);
 }
 
@@ -203,6 +219,8 @@ function celebrate() {
     piece.classList.add("confetti-piece");
     piece.style.left = Math.random() * window.innerWidth + "px";
     piece.style.backgroundColor = `hsl(${Math.random()*360}, 70%, 60%)`;
+    piece.style.width = 10 + Math.random()*10 + "px";
+    piece.style.height = 10 + Math.random()*10 + "px";
     piece.style.animationDuration = (2 + Math.random()*3) + "s";
     confettiContainer.appendChild(piece);
     setTimeout(() => piece.remove(), 4000);
@@ -213,8 +231,10 @@ function celebrate() {
 window.addEventListener("load", () => {
   quotePage.classList.add("fade-in");
   createHearts(25);
-  typeWriter(quoteText, 40);
-  bgMusic.play().catch(()=>{}); // Autoplay may need user interaction
+  typeWriter(quoteText, 40, () => {
+    pushHeartBtn.classList.add("show"); // show heart after letter
+  });
+  bgMusic.play().catch(()=>{});
 });
 
 // Push Heart button
@@ -241,7 +261,7 @@ function loadValentineCard() {
       position: relative;
       z-index:1;
     ">
-      <h1 style="color:#ff4d6d; font-size:46px; font-weight:600; margin:0 0 16px 0;">Hello Liza 💕</h1>
+      <h1 style="color:#ff4d6d; font-size:46px; font-weight:600; margin:0 0 16px 0;">Hello 💕</h1>
       <p style="font-size:24px; color:#333; margin:0 0 50px 0; line-height:1.4;">
         Would you like to be my Valentine? 🌹
       </p>
@@ -310,7 +330,7 @@ function loadValentineCard() {
         </div>
       `;
       createHearts(25);
-    }, 300); // small delay so confetti appears
+    }, 300);
   });
 }
 </script>
